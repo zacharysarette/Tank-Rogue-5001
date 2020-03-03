@@ -1,12 +1,14 @@
 module MapGenerator
 
-  def MapGenerator.CreateMap(dimensions, maxTunnels, maxLength)
-    dimensions = dimensions
-    maxTunnels = maxTunnels
-    maxLength = maxLength
-    map = MapGenerator.CreateArray(1, dimensions)
-    currentRow = rand(1..dimensions - 1)
-    currentColumn = rand(1..dimensions - 1)
+  def MapGenerator.CreateMap(rowsz, columnsz, maxTunnelsz, maxLengthz)
+    rows = rowsz
+    columns = columnsz
+    maxTunnels = maxTunnelsz
+    maxLength = maxLengthz
+    map = CreateArray(1, rows, columns)
+    p map
+    currentRow = rand(rows)
+    currentColumn = rand(columns)
     directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
     lastDirection = []
     randomDirection = []
@@ -17,11 +19,8 @@ module MapGenerator
       # if the last direction = left or right,
       # then our new direction has to be up or down,
       # and vice versa
-      
-      if lastDirection == []
-        randomDirection = directions[rand(directions.count)]
-      elsif lastDirection[1] == 0
-          randomDirection = directions[rand(2..3)]
+      if lastDirection[1] == 0
+        randomDirection = directions[rand(2..3)]
       else
         randomDirection = directions[rand(0..1)]
       end
@@ -31,45 +30,50 @@ module MapGenerator
 
       #lets loop until our tunnel is long enough or until we hit an edge
       while tunnelLength < randomLength do
-        if currentRow === 0
-          if randomDirection[0] === -1 or randomDirection[1] === -1
-            break
-          end
-        end
-        if currentRow === dimensions - 1 
-          if randomDirection[0] === 1 or randomDirection[1] === 1
-            break
-          end
-        end
+        #break the loop if it is going out of the map
+  
+        break if currentRow < 2 && randomDirection[1] === -1 and p "top"
+        break if currentRow >= map.count - 2 && randomDirection[1] === 1 and p "bottom"
+        break if currentColumn < 2 && randomDirection[0] === -1 and p "left"
+        break if currentColumn >= map[0].count - 2 && randomDirection[0] === 1 and p "right"
 
+        p "col: #{currentColumn} row: #{currentRow}"
+        if map[currentRow][currentColumn] != 0
+          map[currentRow][currentColumn] = 0
+          p map[currentRow][currentColumn]
+        end
         #set the value of the index in map to 0 (a tunnel, making it one longer)
-        map[currentRow][currentColumn] = 0
+        
         #add the value from randomDirection to row and col (-1, 0, or 1) to update our location
-        currentRow += randomDirection[0]
-        currentColumn += randomDirection[1]
+
         #the tunnel is now one longer, so lets increment that variable
         tunnelLength += 1
+        currentRow += randomDirection[1]
+        currentColumn += randomDirection[0]
+        
       end
-
+      p "Current Direction: #{randomDirection}"
+      p "Last Direction: #{lastDirection}"
       if tunnelLength > 0 # update our variables unless our last loop broke before we made any part of a tunnel
         lastDirection = randomDirection; #/set lastDirection, so we can remember what way we went
         maxTunnels -= 1 # we created a whole tunnel so lets decrement how many we have left to create
       end
 
     end
+    p map
     return map
   end
 
-  def MapGenerator.CreateArray(num, dimensions)
+  def MapGenerator.CreateArray(num, rows, columns)
     array = []
-    i = 0
-    dimensions.times {
+
+    rows.times do |i|
       array.push([])
-      dimensions.times {
-        array[i].push(num)
-      }
-      i += 1
-     }
+      columns.times do
+        array[i].push(i + 1)
+      end
+    end
+
     return array
   end
 

@@ -37,13 +37,13 @@ class Map
 
 
   def generate_walls(images)
-    map = MapGenerator::CreateMap(25, 80, 15)
+    map = MapGenerator::CreateMap(24, 32, 60, 40)
     row = 0
     while row < map.count
       column = 0
       while column < map[0].count
-        if map[row][column] === 1
-          generate_wall(images[rand(images.count)], row, column)
+        if map[row][column] != 0
+          generate_wall(images[rand(images.count)], column, row)
         end
         column += 1
       end
