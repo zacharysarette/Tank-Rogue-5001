@@ -63,6 +63,6 @@ class Player
 
   def draw
     @image.draw_rot(@x, @y, 1, @angle)
-    draw_collision_body if Configs::DRAW_COLLIDERS
+    draw_colliders if Configs::DRAW_COLLIDERS
   end
 end
