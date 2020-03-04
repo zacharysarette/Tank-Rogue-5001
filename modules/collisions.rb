@@ -1,0 +1,4 @@
+module Collisions
+
+
+end
