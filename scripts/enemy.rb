@@ -12,6 +12,11 @@ class Enemy
 
   def update 
     run_motor
+    check_collisions
+  end
+
+  def check_collisions
+     
   end
 
   def run_motor
@@ -49,7 +54,12 @@ class Enemy
     @vel_y *= 0.95
   end
 
+  def draw_colliders
+
+  end
+
   def draw
     @image.draw_rot(@x, @y, 1, @angle)
+    draw_colliders if Configs::DRAW_COLLIDERS
   end
 end

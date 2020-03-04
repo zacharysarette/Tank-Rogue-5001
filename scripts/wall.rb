@@ -5,7 +5,7 @@ class Wall
     warp(start_point[:x], start_point[:y])
   end
 
-  def update 
+  def update
   end
 
   def warp(x, y)
@@ -14,5 +14,6 @@ class Wall
 
   def draw
     @image.draw(@x, @y, 1)
+    draw_collision_body if Configs::DRAW_COLLIDERS
   end
 end

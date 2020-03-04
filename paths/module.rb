@@ -8,4 +8,5 @@ module ModulePaths
   INPUT_TYPES = B + 'input_types.rb'
   MAP_GENERATOR = B + 'map_generator.rb'
   COLLISIONS = B + 'collisions.rb'
+  CONFIGS = B + 'configs.rb'
 end

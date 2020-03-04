@@ -1,3 +1,4 @@
+require ModulePaths::CONFIGS
 require ModulePaths::SCREEN
 require ModulePaths::OBJECTS
 require ModulePaths::TILE
