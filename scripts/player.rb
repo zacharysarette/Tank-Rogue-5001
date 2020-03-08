@@ -3,6 +3,7 @@ require ScriptPaths::WEAPON
 require ModulePaths::INPUT
 
 class Player
+  attr_reader :x, :y
   def initialize(player_image, start_point)
     @screen = Screen::SCREEN
     @image = player_image
@@ -19,7 +20,7 @@ class Player
   end
 
   def check_collisions
-     
+    #Collisions::GetCollision(rect1, rect2)
   end
 
   def run_motor
@@ -58,7 +59,6 @@ class Player
   end
 
   def draw_colliders
-
   end
 
   def draw

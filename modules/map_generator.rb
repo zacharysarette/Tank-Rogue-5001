@@ -6,7 +6,6 @@ module MapGenerator
     maxTunnels = maxTunnelsz
     maxLength = maxLengthz
     map = CreateArray(1, rows, columns)
-    p map
     currentRow = rand(rows)
     currentColumn = rand(columns)
     directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
@@ -32,15 +31,13 @@ module MapGenerator
       while tunnelLength < randomLength do
         #break the loop if it is going out of the map
   
-        break if currentRow < 2 && randomDirection[1] === -1 and p "top"
-        break if currentRow >= map.count - 2 && randomDirection[1] === 1 and p "bottom"
-        break if currentColumn < 2 && randomDirection[0] === -1 and p "left"
-        break if currentColumn >= map[0].count - 2 && randomDirection[0] === 1 and p "right"
+        break if currentRow < 2 && randomDirection[1] === -1 
+        break if currentRow >= map.count - 2 && randomDirection[1] === 1 
+        break if currentColumn < 2 && randomDirection[0] === -1
+        break if currentColumn >= map[0].count - 2 && randomDirection[0] === 1
 
-        p "col: #{currentColumn} row: #{currentRow}"
         if map[currentRow][currentColumn] != 0
           map[currentRow][currentColumn] = 0
-          p map[currentRow][currentColumn]
         end
         #set the value of the index in map to 0 (a tunnel, making it one longer)
         
@@ -52,15 +49,12 @@ module MapGenerator
         currentColumn += randomDirection[0]
         
       end
-      p "Current Direction: #{randomDirection}"
-      p "Last Direction: #{lastDirection}"
       if tunnelLength > 0 # update our variables unless our last loop broke before we made any part of a tunnel
         lastDirection = randomDirection; #/set lastDirection, so we can remember what way we went
         maxTunnels -= 1 # we created a whole tunnel so lets decrement how many we have left to create
       end
 
     end
-    p map
     return map
   end
 

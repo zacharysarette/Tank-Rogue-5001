@@ -13,8 +13,6 @@ class Map
     generate_walls(wall_images)
   end
 
-
-
   def generate_enemies(images)
     rand(1..20).times{ generate_enemy(images[rand(images.count)])}
   end
@@ -34,7 +32,6 @@ class Map
     y = 32 * rand(16)
     Objects::OBJECTS.add(Item.new(image, {x: x, y: y}))
   end
-
 
   def generate_walls(images)
     map = MapGenerator::CreateMap(24, 32, 60, 40)

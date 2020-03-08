@@ -2,6 +2,7 @@ require ScriptPaths::MOTOR
 require ScriptPaths::WEAPON
 require ModulePaths::AI_INPUT
 class Enemy
+  attr_reader :x, :y
   def initialize(image, start_point)
     @image = image
     @x = @y = @vel_x = @vel_y = @angle = 0.0

@@ -1,9 +1,11 @@
 ## To Do :cake:
 
 - Collisions :bear:
-  - Draw boxes around entities
-  - Draw debug boxes
-  - Handle Collisions for each entity
+  - Draw boxes around entities -- Done
+  - Draw debug boxes -- Working
+  - Handle Collisions for each entity -- Working
+    - Setup Quadtree data structure
+    - Setup Collision Handler
 - Projectiles :christmas_tree:
 - Good Enemy Movement :candy:
   - Stationary good shot
