@@ -45,18 +45,18 @@ class QuadTree
   end
   
   def insert(point)
-    return if !@boundary.contains(point)
+    return false if !@boundary.contains(point)
     if (@points.length < @capacity)
       @points.push(point)
+      return true
     else
       if !@divided
         subdivide
-        @divided = true
       end
-      @northeast.insert(point)
-      @northwest.insert(point)     
-      @southeast.insert(point)     
-      @southwest.insert(point)
+      return true if @northeast.insert(point)
+      return true if @northwest.insert(point)     
+      return true if @southeast.insert(point)     
+      return true if @southwest.insert(point)
     end
   end
 
