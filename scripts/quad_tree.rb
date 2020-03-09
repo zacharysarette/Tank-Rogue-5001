@@ -22,6 +22,12 @@ class Rectangle
     point.y <= @y + @h
   end
   
+  def intersects(range)
+    return range.x + range.width >= @x &&
+    range.x <= @x + @w &&
+    range.y + range.height >= @x &&
+    range.y <= @y + @h
+  end
 end
 
 class QuadTree
@@ -41,7 +47,7 @@ class QuadTree
     @southeast = QuadTree.new(se)
     sw = Rectangle.new(@boundary.x - @boundary.w/2, @boundary.y + @boundary.h/2, @boundary.w/2, @boundary.h/2)      
     @southwest = QuadTree.new(sw)
-    @divided = true
+    @divided = true 
   end
   
   def insert(point)
@@ -58,6 +64,22 @@ class QuadTree
       return true if @southeast.insert(point)     
       return true if @southwest.insert(point)
     end
+  end
+
+  def query(range, found = [])
+    return found if !@boundary.intersects(range)
+    for p in @points
+      if range.contains(p)
+        found.push(p)
+      end
+    end
+    if @divided
+      @northwest.query(range, found)
+      @northwest.query(range, found)
+      @northwest.query(range, found)
+      @northwest.query(range, found)
+    end
+    return found
   end
 
 end
