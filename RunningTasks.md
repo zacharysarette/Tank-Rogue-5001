@@ -4,8 +4,14 @@
   - Draw boxes around entities -- Done
   - Draw debug boxes -- Working
   - Handle Collisions for each entity -- Working
-    - Setup Quadtree data structure
-    - Setup Collision Handler
+    - Setup Quadtree data structure -- DONE
+    - Setup Collision Handler -- Working
+      - Setup proto-collision machine
+      - Seperate collision class
+      - Collision shape attached to collision objects
+      - collision flag
+      - set highlight, or other debug function
+      - intersection/collision detection method on the object 
 - Projectiles :christmas_tree:
 - Good Enemy Movement :candy:
   - Stationary good shot
