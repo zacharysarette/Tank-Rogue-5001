@@ -1,8 +1,9 @@
 class Point
   attr_reader :x, :y
-  def initialize(x, y)
+  def initialize(x, y, data)
     @x = x
     @y = y
+    @data = data;
   end
 end
 
@@ -31,6 +32,7 @@ class Rectangle
 end
 
 class QuadTree
+  attr_reader :points
   def initialize(boundary, capacity = 4)
     @boundary = boundary
     @capacity = capacity

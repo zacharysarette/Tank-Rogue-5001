@@ -16,13 +16,11 @@ class Game < Gosu::Window
     @player = load_player
     generate_map
     load_objects
-    load_quad_tree
   end
 
   def load_quad_tree
     boundary = Rectangle.new(0, 0, Screen::SCREEN[:w], Screen::SCREEN[:h])
     @qt = QuadTree.new(boundary, Configs::QUAD_TREE_CAPACITY)
-    p @qt
   end
 
   def load_images
@@ -49,13 +47,26 @@ class Game < Gosu::Window
   end
 
   def update
+    load_quad_tree
     @objects.get.each{|obj|
       load_point(obj)
       obj.update}
+    @objects.get.each{|obj|check_collisions(obj)}
+  end
+  
+  def check_collisions(obj)
+    range = Rectangle.new(obj.x, obj.y, 32, 32)
+    points = @qt.query(range)
+    for point in points
+      other = point.userData
+      if obj! == other && obj.intersects(other)
+        obj.set_highlight(true)
+      end
+    end
   end
 
-  def load_point(obj) 
-    pt = Point.new(obj.x, obj.y)
+  def load_point(obj)
+    pt = Point.new(obj.x, obj.y, obj)
     @qt.insert(pt)
   end
   
