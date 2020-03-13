@@ -3,11 +3,19 @@ require ScriptPaths::WEAPON
 require ModulePaths::AI_INPUT
 class Enemy
   attr_reader :x, :y
-  def initialize(image, start_point)
+  def initialize(
+    image,
+    start_point,
+    motor: Motor.new(self, AiInput),
+    weapon: Weapon.new,
+    collision_object: CollisionObject.new
+    )
     @image = image
     @x = @y = @vel_x = @vel_y = @angle = 0.0
-    @motor = Motor.new(self, AiInput)
-    @weapon = Weapon.new()
+    @motor = motor
+    @weapon = weapon 
+    @collision_object = collision_object 
+    @collision_object.update_rect(x:@x, y:@y)
     warp(start_point[:x], start_point[:y])
   end
 
@@ -26,6 +34,7 @@ class Enemy
 
   def warp(x, y)
     @x, @y = x, y
+    @collision_object.update_rect(x:@x, y:@y)
   end
 
   def turn_left
@@ -50,7 +59,8 @@ class Enemy
     @y += @vel_y
     @x %= Screen::SCREEN[:w] 
     @y %= Screen::SCREEN[:h]
-    
+    @collision_object.update_rect(x:@x, y:@y)   
+
     @vel_x *= 0.95
     @vel_y *= 0.95
   end

@@ -4,13 +4,21 @@ require ModulePaths::INPUT
 
 class Player
   attr_reader :x, :y
-  def initialize(player_image, start_point)
+  def initialize(
+    player_image,
+    start_point,
+    weapon: Weapon.new,
+    motor: Motor.new(self, Input),
+    collision_object: CollisionObject.new
+  )
     @screen = Screen::SCREEN
     @image = player_image
     @x = @y = @vel_x = @vel_y = @angle = 0.0
     @score = 0
-    @motor = Motor.new(self, Input)
-    @weapon = Weapon.new()
+    @motor = motor
+    @weapon = weapon 
+    @collision_object = collision_object
+    @collision_object.update_rect(@x, @y)
     warp(start_point[:x], start_point[:y])
   end
 
@@ -53,6 +61,7 @@ class Player
     @y += @vel_y
     @x %= @screen[:w] 
     @y %= @screen[:h]
+    @collision_object.update_rect(x: @x, y: @y)
     
     @vel_x *= 0.95
     @vel_y *= 0.95

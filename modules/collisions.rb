@@ -1,10 +1,17 @@
 module Collisions
-  def Collisions.GetRect(x, y, image)
+  COLLIDER_HEIGHT = 32
+  COLLIDER_WIDTH = 32
+  def Collisions.GetRect(
+    x,
+    y,
+    h = COLLIDER_HEIGHT,
+    w = COLLIDER_WIDTH
+  )
     return {
       :x => x,
       :y => y,
-      :height => image.height,
-      :width => image.width }
+      :height => h,
+      :width => w}
   end
 
   def Collisions.GetCollision(rect1, rect2)

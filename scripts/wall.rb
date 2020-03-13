@@ -1,8 +1,14 @@
 class Wall
   attr_reader :x, :y 
-  def initialize(image, start_point)
+  def initialize(
+    image,
+    start_point,
+    collision_object: CollisionObject.new
+  )
     @image = image
     @x = @y
+    @collision_object = collision_object 
+    @collision_object.update_rect(x:@x, y:@y)
     warp(start_point[:x], start_point[:y])
   end
 
@@ -11,6 +17,7 @@ class Wall
 
   def warp(x, y)
     @x, @y = x, y
+    @collision_object.update_rect(x:@x, y:@y)
   end
 
   def draw
