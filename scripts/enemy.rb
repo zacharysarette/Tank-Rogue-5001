@@ -2,7 +2,7 @@ require ScriptPaths::MOTOR
 require ScriptPaths::WEAPON
 require ModulePaths::AI_INPUT
 class Enemy
-  attr_reader :x, :y
+  attr_reader :x, :y, :collision_object
   def initialize(
     image,
     start_point,
@@ -15,17 +15,28 @@ class Enemy
     @motor = motor
     @weapon = weapon 
     @collision_object = collision_object 
-    @collision_object.update_rect(x:@x, y:@y)
+    @collision_object.update_rect(@x, @y)
     warp(start_point[:x], start_point[:y])
   end
 
   def update 
     run_motor
-    check_collisions
   end
 
-  def check_collisions
-     
+  def react_to_collision(collision_data)
+    return if collision_data == nil
+    case collision_data
+    when :left
+      @vel_x = 2
+    when :right
+      @vel_x = 2
+    when :top
+      @vel_y = 2
+    when :bottom
+      @vel_y = 2
+    end
+    @motor.disable
+    move
   end
 
   def run_motor
@@ -34,7 +45,7 @@ class Enemy
 
   def warp(x, y)
     @x, @y = x, y
-    @collision_object.update_rect(x:@x, y:@y)
+    @collision_object.update_rect(@x, @y)
   end
 
   def turn_left
@@ -59,18 +70,14 @@ class Enemy
     @y += @vel_y
     @x %= Screen::SCREEN[:w] 
     @y %= Screen::SCREEN[:h]
-    @collision_object.update_rect(x:@x, y:@y)   
+    @collision_object.update_rect(@x, @y)   
 
     @vel_x *= 0.95
     @vel_y *= 0.95
-  end
-
-  def draw_colliders
-
+    @motor.enable
   end
 
   def draw
     @image.draw_rot(@x, @y, 1, @angle)
-    draw_colliders if Configs::DRAW_COLLIDERS
   end
 end

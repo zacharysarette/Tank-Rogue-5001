@@ -1,5 +1,5 @@
 class Wall
-  attr_reader :x, :y 
+  attr_reader :x, :y, :collision_object
   def initialize(
     image,
     start_point,
@@ -8,20 +8,24 @@ class Wall
     @image = image
     @x = @y
     @collision_object = collision_object 
-    @collision_object.update_rect(x:@x, y:@y)
+    @collision_object.update_rect(@x, @y)
     warp(start_point[:x], start_point[:y])
   end
 
   def update
   end
 
+  def react_to_collision(collision_data)
+    #p "Wall hit: #{collision_data}"
+  end
+
   def warp(x, y)
     @x, @y = x, y
-    @collision_object.update_rect(x:@x, y:@y)
+    @collision_object.update_rect(@x, @y)
   end
 
   def draw
     @image.draw(@x, @y, 1)
-    draw_collision_body if Configs::DRAW_COLLIDERS
+    #draw_collision_body if Configs::DRAW_COLLIDERS
   end
 end

@@ -3,7 +3,7 @@ require ScriptPaths::WEAPON
 require ModulePaths::INPUT
 
 class Player
-  attr_reader :x, :y
+  attr_reader :x, :y, :collision_object
   def initialize(
     player_image,
     start_point,
@@ -24,11 +24,22 @@ class Player
 
   def update 
     run_motor
-    check_collisions
   end
 
-  def check_collisions
-    #Collisions::GetCollision(rect1, rect2)
+  def react_to_collision(collision_data)
+    return if collision_data == nil
+    case collision_data
+    when :left
+      @vel_x = 2
+    when :right
+      @vel_x = 2  
+    when :top
+      @vel_y = 2
+    when :bottom
+      @vel_y = 2
+    end
+    @motor.disable
+    move
   end
 
   def run_motor
@@ -61,10 +72,11 @@ class Player
     @y += @vel_y
     @x %= @screen[:w] 
     @y %= @screen[:h]
-    @collision_object.update_rect(x: @x, y: @y)
+    @collision_object.update_rect(@x, @y)
     
     @vel_x *= 0.95
     @vel_y *= 0.95
+    @motor.enable
   end
 
   def draw_colliders

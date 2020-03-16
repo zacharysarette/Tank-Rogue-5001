@@ -1,5 +1,5 @@
 class Point
-  attr_reader :x, :y
+  attr_reader :x, :y, :data 
   def initialize(x, y, data)
     @x = x
     @y = y
@@ -15,24 +15,33 @@ class Rectangle
     @w = w
     @h = h
   end
-  
+
+  def draw
+    color = Gosu::Color::YELLOW
+    z = 10
+    Gosu::draw_line(@x, @y, color, @x, @y + @h, color, z)
+    Gosu::draw_line(@x, @y + @h, color, @x + @w, @y + @h, color, z)
+    Gosu::draw_line(@x + @w, @y + @h, color, @x + @w, @y, color, z)
+    Gosu::draw_line(@x + @w, @y, color, @x, @y, color, z)
+  end
+
   def contains(point)
-    point.x >= @x - @w &&
-    point.x <= @x + @w &&
-    point.y >= @y - @h &&
-    point.y <= @y + @h
+    point.x > @x &&
+    point.x < @x + @w &&
+    point.y > @y &&
+    point.y < @y + @h
   end
   
   def intersects(range)
-    return range.x + range.width >= @x &&
-    range.x <= @x + @w &&
-    range.y + range.height >= @x &&
-    range.y <= @y + @h
+    return !(range.x + range.w < @x ||  
+    range.x > @x + @w ||
+    range.y + range.h < @y ||
+    range.y > @y + @h)
   end
 end
 
 class QuadTree
-  attr_reader :points
+  attr_reader :points, :boundary, :divided
   def initialize(boundary, capacity = 4)
     @boundary = boundary
     @capacity = capacity
@@ -41,17 +50,30 @@ class QuadTree
   end
   
   def subdivide
-    ne = Rectangle.new(@boundary.x + @boundary.w/2, @boundary.y - @boundary.h/2, @boundary.w/2, @boundary.h/2)
+    ne = Rectangle.new(@boundary.x + @boundary.w/2, @boundary.y, @boundary.w/2, @boundary.h/2)
     @northeast = QuadTree.new(ne)
-    nw = Rectangle.new(@boundary.x - @boundary.w/2, @boundary.y - @boundary.h/2, @boundary.w/2, @boundary.h/2)   
+    nw = Rectangle.new(@boundary.x, @boundary.y, @boundary.w/2, @boundary.h/2)   
     @northwest = QuadTree.new(nw)
     se = Rectangle.new(@boundary.x + @boundary.w/2, @boundary.y + @boundary.h/2, @boundary.w/2, @boundary.h/2)
     @southeast = QuadTree.new(se)
-    sw = Rectangle.new(@boundary.x - @boundary.w/2, @boundary.y + @boundary.h/2, @boundary.w/2, @boundary.h/2)      
+    sw = Rectangle.new(@boundary.x, @boundary.y + @boundary.h/2, @boundary.w/2, @boundary.h/2)      
     @southwest = QuadTree.new(sw)
-    @divided = true 
+    @divided = true
   end
-  
+
+  def draw_rects
+    if @divided
+      @southeast.boundary.draw
+      @southeast.draw_rects if @southeast.divided == true
+      @northeast.boundary.draw
+      @northeast.draw_rects if @northeast.divided == true
+      @northwest.boundary.draw
+      @northwest.draw_rects if @northwest.divided == true
+      @southwest.boundary.draw
+      @southwest.draw_rects if @southwest.divided == true
+    end
+  end
+
   def insert(point)
     return false if !@boundary.contains(point)
     if (@points.length < @capacity)
@@ -76,7 +98,7 @@ class QuadTree
       end
     end
     if @divided
-      @northwest.query(range, found)
+      @northwest.query(range, found) 
       @northwest.query(range, found)
       @northwest.query(range, found)
       @northwest.query(range, found)

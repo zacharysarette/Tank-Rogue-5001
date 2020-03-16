@@ -2,9 +2,19 @@ class Motor
   def initialize(vehicle, input)
     @vehicle = vehicle
     @input = input
+    @motor_enabled = true
+  end
+
+  def disable
+    @motor_enabled = false
+  end
+  
+  def enable
+    @motor_enabled = true
   end
 
   def run
+    return if !@motor_enabled
     for input in @input.GetInput
       case input
         when InputTypes::LEFT

@@ -10,7 +10,7 @@ class Map
   def generate(enemy_images, item_images, wall_images)
     generate_enemies(enemy_images)
     generate_items(item_images)
-    generate_walls(wall_images)
+    #generate_walls(wall_images)
   end
 
   def generate_enemies(images)
@@ -34,7 +34,7 @@ class Map
   end
 
   def generate_walls(images)
-    map = MapGenerator::CreateMap(24, 32, 60, 40)
+    map = MapGenerator::CreateMap(24, 32, 80, 60)
     row = 0
     while row < map.count
       column = 0
@@ -51,6 +51,6 @@ class Map
   def generate_wall(image, row, column)
     x = 32 * row
     y = 32 * column
-    Objects::OBJECTS.add(Item.new(image, {x: x, y: y}))
+    Objects::OBJECTS.add(Wall.new(image, {x: x, y: y}))
   end
 end

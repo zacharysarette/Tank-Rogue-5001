@@ -2,6 +2,7 @@ require ModulePaths::CONFIGS
 require ModulePaths::SCREEN
 require ModulePaths::OBJECTS
 require ModulePaths::COLLISIONS
+require ScriptPaths::COLLISION_OBJECT
 require ModulePaths::TILE
 require ScriptPaths::COLLISION_PROCESSOR
 require ScriptPaths::MAP
@@ -12,15 +13,11 @@ class Game < Gosu::Window
   def initialize
     super Screen::SCREEN[:w], Screen::SCREEN[:h]
     self.caption = 'TANK ROGUE by Zach Sarette'
+    @collision_processor = CollisionProcessor.new
     load_images
     @player = load_player
     generate_map
     load_objects
-  end
-
-  def load_quad_tree
-    boundary = Rectangle.new(0, 0, Screen::SCREEN[:w], Screen::SCREEN[:h])
-    @qt = QuadTree.new(boundary, Configs::QUAD_TREE_CAPACITY)
   end
 
   def load_images
@@ -47,32 +44,18 @@ class Game < Gosu::Window
   end
 
   def update
-    load_quad_tree
+    @collision_processor.load_quad_tree
     @objects.get.each{|obj|
-      load_point(obj)
+      @collision_processor.load_point(obj)
       obj.update}
-    @objects.get.each{|obj|check_collisions(obj)}
-  end
-  
-  def check_collisions(obj)
-    range = Rectangle.new(obj.x, obj.y, 32, 32)
-    points = @qt.query(range)
-    for point in points
-      other = point.userData
-      if obj! == other && obj.intersects(other)
-        obj.set_highlight(true)
-      end
-    end
+    @objects.get.each{|obj|
+      @collision_processor.check_collisions(obj)}
   end
 
-  def load_point(obj)
-    pt = Point.new(obj.x, obj.y, obj)
-    @qt.insert(pt)
-  end
-  
   def draw
     @objects.get.each{|obj| obj.draw}
     Tile::tilescreen(@background_image)
+    @collision_processor.draw_qt
   end
 
   def button_down(id)
@@ -82,5 +65,5 @@ class Game < Gosu::Window
       super
     end
   end
-end
 
+end
