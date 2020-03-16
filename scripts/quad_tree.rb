@@ -98,10 +98,10 @@ class QuadTree
       end
     end
     if @divided
-      @northwest.query(range, found) 
+      @northeast.query(range, found) 
       @northwest.query(range, found)
-      @northwest.query(range, found)
-      @northwest.query(range, found)
+      @southeast.query(range, found)
+      @southwest.query(range, found)
     end
     return found
   end

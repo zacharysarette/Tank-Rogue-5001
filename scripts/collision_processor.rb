@@ -6,8 +6,11 @@ class CollisionProcessor
 
   def load_point(obj)
     pt = Point.new(obj.x, obj.y, obj)
+    @qt.insert(pt)
     pt = Point.new(obj.x, obj.y + 32 , obj)
+    @qt.insert(pt)   
     pt = Point.new(obj.x + 32 , obj.y, obj)
+    @qt.insert(pt)
     pt = Point.new(obj.x + 32 , obj.y + 32, obj)
     @qt.insert(pt)
   end

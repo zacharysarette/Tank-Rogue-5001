@@ -10,7 +10,7 @@ class Map
   def generate(enemy_images, item_images, wall_images)
     generate_enemies(enemy_images)
     generate_items(item_images)
-    #generate_walls(wall_images)
+    generate_walls(wall_images)
   end
 
   def generate_enemies(images)
