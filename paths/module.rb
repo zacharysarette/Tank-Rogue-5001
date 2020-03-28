@@ -7,6 +7,6 @@ module ModulePaths
   AI_INPUT = B + 'ai_input.rb'
   INPUT_TYPES = B + 'input_types.rb'
   MAP_GENERATOR = B + 'map_generator.rb'
-  COLLISIONS = B + 'collisions.rb'
   CONFIGS = B + 'configs.rb'
+  MOTOR_MOVES = B + 'motor_moves.rb'
 end

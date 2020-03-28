@@ -15,7 +15,9 @@ class Motor
 
   def run
     return if !@motor_enabled
-    for input in @input.GetInput
+    inputs = @input.GetInput
+    @vehicle.idle if inputs == []
+    for input in inputs
       case input
         when InputTypes::LEFT
           @vehicle.turn_left
@@ -25,7 +27,7 @@ class Motor
           @vehicle.accelerate
       end
     end
-    @vehicle.move
+
   end
 
 end

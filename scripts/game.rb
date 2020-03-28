@@ -1,19 +1,15 @@
 require ModulePaths::CONFIGS
 require ModulePaths::SCREEN
 require ModulePaths::OBJECTS
-require ModulePaths::COLLISIONS
-require ScriptPaths::COLLISION_OBJECT
 require ModulePaths::TILE
-require ScriptPaths::COLLISION_PROCESSOR
 require ScriptPaths::MAP
 require ScriptPaths::PLAYER
-require ScriptPaths::QUAD_TREE
 
 class Game < Gosu::Window
   def initialize
     super Screen::SCREEN[:w], Screen::SCREEN[:h]
     self.caption = 'TANK ROGUE by Zach Sarette'
-    @collision_processor = CollisionProcessor.new
+
     load_images
     @player = load_player
     generate_map
@@ -30,7 +26,7 @@ class Game < Gosu::Window
   end
 
   def load_player
-    Player.new(@tank_image, {x:40, y:40})
+    Player.new(@tank_image, {x:48, y:48})
   end
 
   def generate_map
@@ -43,19 +39,21 @@ class Game < Gosu::Window
     @objects.add(@player)
   end
 
+  def take_turn
+    @objects.get.each{|obj|
+      obj.take_turn
+    }
+  end
+
   def update
-    @collision_processor.load_quad_tree
     @objects.get.each{|obj|
-      @collision_processor.load_point(obj)
       obj.update}
-    @objects.get.each{|obj|
-      @collision_processor.check_collisions(obj)}
+    take_turn if @player.turn_taken
   end
 
   def draw
     @objects.get.each{|obj| obj.draw}
     Tile::tilescreen(@background_image)
-    @collision_processor.draw_qt
   end
 
   def button_down(id)

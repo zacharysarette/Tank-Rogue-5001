@@ -11,7 +11,4 @@ module ScriptPaths
   PROJECTILE = B + 'projectile.rb'
   WALL = B + 'wall.rb'
   ENEMY = B + 'enemy.rb'
-  COLLISION_PROCESSOR = B + 'collision_processor.rb'
-  QUAD_TREE = B + 'quad_tree.rb'
-  COLLISION_OBJECT = B + 'collision_object.rb'
 end
