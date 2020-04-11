@@ -1,6 +1,7 @@
 require ModulePaths::CONFIGS
 require ModulePaths::SCREEN
 require ModulePaths::OBJECTS
+require ModulePaths::TURNS
 require ModulePaths::TILE
 require ScriptPaths::MAP
 require ScriptPaths::PLAYER
@@ -12,15 +13,15 @@ class Game < Gosu::Window
 
     load_images
     @player = load_player
-    generate_map
+    load_turns
     load_objects
+    generate_map
   end
 
   def load_images
     @background_image = Gosu::Image.new(SpritePaths::GRASS, :tileable => true)
     @tank_image = Gosu::Image.new(SpritePaths::TANK)
     @item_images = Gosu::Image::load_tiles(SpritePaths::ITEMS, 32, 32)
-    #@projectile_images = Gosu::Image.new(SpritePaths::PROJECTILES, :tileable => true)
     @enemy_images = Gosu::Image::load_tiles(SpritePaths::ENEMIES, 32, 32)
     @wall_images = Gosu::Image::load_tiles(SpritePaths::WALLS, 32, 32)
   end
@@ -34,21 +35,22 @@ class Game < Gosu::Window
     @map.generate(@enemy_images, @item_images, @wall_images)
   end
 
+  def load_turns
+    @turns = Turns::TURNS
+    @turns.add(@player)
+  end
+
   def load_objects
     @objects = Objects::OBJECTS
     @objects.add(@player)
   end
 
-  def take_turn
-    @objects.get.each{|obj|
-      obj.take_turn
-    }
-  end
-
   def update
     @objects.get.each{|obj|
       obj.update}
-    take_turn if @player.turn_taken
+    if @turns.get_current_turn_object.turn_taken == true 
+      @turns.next_turn
+    end
   end
 
   def draw

@@ -20,7 +20,9 @@ class Map
   def generate_enemy(image)
     x = 32 * rand(16)
     y = 32 * rand(16)
-    Objects::OBJECTS.add(Enemy.new(image, {x: x, y: y}))
+    enemy = Enemy.new(image, {x: x, y: y})
+    Objects::OBJECTS.add(enemy)
+    Turns::TURNS.add(enemy)
   end
 
   def generate_items(images)

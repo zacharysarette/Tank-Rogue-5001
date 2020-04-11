@@ -15,7 +15,7 @@ module Input
     if Gosu.button_down? Gosu::KB_DOWN or Gosu::button_down? Gosu::GP_DOWN
       inputs.push(InputTypes::DOWN)
     end
-    if Gosu.button_down? Gosu::KB_SPACE or Gosu::button_down? Gosu::GpButton0
+    if Gosu.button_down? Gosu::KB_LEFT_CONTROL or Gosu::button_down? Gosu::GpButton0
       inputs.push(InputTypes::ACTION_A)
     end
     if Gosu.button_down? Gosu::KB_SPACE or Gosu::button_down? Gosu::GpButton1

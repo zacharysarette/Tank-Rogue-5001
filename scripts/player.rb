@@ -8,6 +8,7 @@ class Player
   def initialize(
     player_image,
     start_point,
+    # TODO: implement standard images in static module or config file
     weapon: Weapon.new,
     motor: Motor.new(self, Input)
   )
@@ -24,7 +25,9 @@ class Player
   end
 
   def update 
-    run_motor
+    if @turn_taken == false
+      run_motor
+    end
   end
 
   def take_turn
@@ -58,7 +61,8 @@ class Player
   end
 
   def fire
-    @weapon.fire
+    @weapon.fire(@x, @y, @angle)
+    @turn_taken = true
   end
   
   def accelerate

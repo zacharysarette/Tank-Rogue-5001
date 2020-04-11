@@ -4,7 +4,7 @@ require ModulePaths::AI_INPUT
 require ModulePaths::MOTOR_MOVES
 
 class Enemy
-  attr_reader :x, :y 
+  attr_reader :x, :y, :turn_taken 
   def initialize(
     image,
     start_point,
@@ -13,6 +13,7 @@ class Enemy
     )
     @image = image
     @x = @y = @vel_x = @vel_y = @angle = 0.0
+    @turn_taken = false
     @motor = motor
     @weapon = weapon 
     @new_move = MotorMoves::IDLE
@@ -20,10 +21,13 @@ class Enemy
   end
 
   def update 
+    if @turn_taken == false
+      run_motor
+    end
   end
 
   def take_turn
-    run_motor
+    @turn_taken = false
   end
 
   def run_motor
@@ -42,16 +46,19 @@ class Enemy
     return if @next_move == MotorMoves::TURN_LEFT
     @angle -= 90 
     @next_move = MotorMoves::TURN_LEFT
+    @turn_taken = true
   end
 
   def turn_right
     return if @next_move == MotorMoves::TURN_RIGHT
     @angle += 90.5
     @next_move = MotorMoves::TURN_RIGHT
+    @turn_taken = true
   end
 
   def fire
-    @weapon.fire
+    @weapon.fire(@x, @y, @angle)
+    @turn_taken = true
   end
 
   def accelerate
@@ -68,6 +75,7 @@ class Enemy
 
     @vel_x *= 0.95
     @vel_y *= 0.95
+    @turn_taken = true
   end
 
   def draw

@@ -1,19 +1,11 @@
 ## To Do :cake:
 
 - Collisions :bear:
-  - Draw boxes around entities -- Done
-  - Draw debug boxes -- Working
-  - Handle Collisions for each entity -- Working
-    - Setup Quadtree data structure -- DONE
-    - Setup Collision Handler -- Working
-      - Setup proto-collision machine
-      - Seperate collision class
-      - Collision shape attached to collision objects
-      - collision flag
-      - set highlight, or other debug function
-      - intersection/collision detection method on the object 
-- Projectiles :christmas_tree:
-- Good Enemy Movement :candy:
+- Projectiles :christmas_tree: 
+  - moving --> Next
+  - colliding
+- Separate Animation logic into a module :fish:
+- Enemy Movement :candy:
   - Stationary good shot
   - Moving slow, okay shot
   - Moving fast, bad shot
@@ -21,6 +13,7 @@
 - Win/Lose screen :moneybag:
 - Menu system :jack_o_lantern:
 
-
-## Done
+## Done :computer:
 - Improve Map Gen :crown:
+- Draw boxes around entities -- Done
+- Setup Quadtree data structure -- Done

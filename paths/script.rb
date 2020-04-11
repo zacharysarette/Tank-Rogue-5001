@@ -8,6 +8,7 @@ module ScriptPaths
   ITEM = B + 'item.rb'
   WEAPON = B + 'weapon.rb'
   OBJECT_POOL = B + 'object_pool.rb'
+  TURN_POOL = B + 'turn_pool.rb'
   PROJECTILE = B + 'projectile.rb'
   WALL = B + 'wall.rb'
   ENEMY = B + 'enemy.rb'

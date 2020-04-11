@@ -25,6 +25,8 @@ class Motor
           @vehicle.turn_right
         when InputTypes::UP
           @vehicle.accelerate
+        when InputTypes::ACTION_A
+          @vehicle.fire
       end
     end
 
